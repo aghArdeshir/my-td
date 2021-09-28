@@ -5,16 +5,20 @@ const canvas = document.createElement('canvas');
 canvas.width = WIDTH;
 canvas.height = HEIGHT;
 canvas.style.border = '1px solid';
-
-const ctx = canvas.getContext('2d');
 document.body.appendChild(canvas);
 
-export function draw(callback: (renderer: typeof ctx) => void) {
-  callback(ctx);
+const ctx = canvas.getContext('2d');
+
+export function draw(callback: (renderer: CanvasRenderingContext2D) => void) {
+  if (ctx) {
+    callback(ctx);
+  }
 }
 
 export function clearCanvas() {
-  ctx.clearRect(0, 0, WIDTH, HEIGHT);
+  if (ctx) {
+    ctx.clearRect(0, 0, WIDTH, HEIGHT);
+  }
 }
 
 export function isCompletelyOutOfScene(
