@@ -1,4 +1,4 @@
-import { draw } from './ctx';
+import { draw, isCompletelyOutOfScene } from './ctx';
 import { Tower } from './Tower';
 import { degreeToRadians } from './utils';
 
@@ -9,6 +9,7 @@ export class Bullet {
 
   private x: number;
   private y: number;
+  private intervalRef: NodeJS.Timer;
 
   constructor(tower: Tower, degrees: number) {
     const { x, y } = tower.getCenter();
@@ -17,10 +18,18 @@ export class Bullet {
 
     const radian = degreeToRadians(degrees);
 
-    setInterval(() => {
+    this.intervalRef = setInterval(() => {
+      if (isCompletelyOutOfScene(this.x, this.y, Bullet.WIDTH, Bullet.HEIGHT)) {
+        this.destroy();
+      }
+
       this.x += Bullet.SPEED * Math.cos(radian);
       this.y += Bullet.SPEED * Math.sin(radian);
     }, 1);
+  }
+
+  private destroy() {
+    clearInterval(this.intervalRef);
   }
 
   public draw() {
