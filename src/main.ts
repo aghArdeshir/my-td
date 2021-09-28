@@ -3,9 +3,14 @@ import { startGameLoop } from './game-loop';
 import { Tower } from './Tower';
 
 const tower = new Tower(10, 10);
-const bullet = new Bullet(tower, 45);
+
+const bullets: Bullet[] = [];
+
+setInterval(() => {
+  bullets.push(new Bullet(tower, 45));
+}, 500);
 
 startGameLoop(() => {
   tower.draw();
-  bullet.draw();
+  bullets.forEach(bullet => bullet.draw());
 });
